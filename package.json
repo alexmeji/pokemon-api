@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "database:migrate": "sequelize db:migrate",
     "lint": "eslint --ext .js src"
   },
   "keywords": [
