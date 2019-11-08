@@ -9,7 +9,7 @@ class InfoController {
     res.json({
       name: 'pokedex-backend',
       version: '0.1.0',
-    })
+    });
   }
 
   info(req, res) {

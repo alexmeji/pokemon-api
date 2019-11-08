@@ -15,7 +15,7 @@ class PokemonController {
   }
 
   one(req, res) {
-    const pokemon = pokemonsdb.find(pk => String(pk.id) === req.params.pokemonid);
+    const pokemon = pokemonsdb.find((pk) => String(pk.id) === req.params.pokemonid);
     if (pokemon) {
       res.json(pokemon);
     } else {
@@ -28,7 +28,7 @@ class PokemonController {
 
   store(req, res) {
     const newPokemon = req.body;
-    const pokemon = pokemonsdb.find(pk => pk.id === newPokemon.id);
+    const pokemon = pokemonsdb.find((pk) => pk.id === newPokemon.id);
     if (!pokemon) {
       pokemonsdb.push(newPokemon);
       res.json(newPokemon);
@@ -43,7 +43,7 @@ class PokemonController {
   update(req, res) {
     const pokemonId = req.params.pokemonid;
     const updatePokemon = req.body;
-    const pokemonIndex = pokemonsdb.findIndex(pk => pk.id === parseInt(pokemonId));
+    const pokemonIndex = pokemonsdb.findIndex((pk) => pk.id === parseInt(pokemonId, 10));
     if (pokemonIndex > 0) {
       pokemonsdb.splice(pokemonIndex, 1, updatePokemon);
       res.json(updatePokemon);
@@ -57,7 +57,7 @@ class PokemonController {
 
   destroy(req, res) {
     const pokemonId = req.params.pokemonid;
-    const pokemonIndex = pokemonsdb.findIndex(pk => pk.id === parseInt(pokemonId));
+    const pokemonIndex = pokemonsdb.findIndex((pk) => pk.id === parseInt(pokemonId, 10));
     if (pokemonIndex > 0) {
       pokemonsdb.splice(pokemonIndex, 1);
       res.json({
