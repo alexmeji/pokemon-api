@@ -1,3 +1,4 @@
+const boom = require('@hapi/boom');
 const pokemonRepository = require('../repositories/pokemons-repository');
 
 class PokemonController {
@@ -10,86 +11,56 @@ class PokemonController {
     this.router.delete('/pokemons/:pokemonid', this.destroy);
   }
 
-  async list(req, res) {
+  async list(req, res, next) {
     try {
       const list = await pokemonRepository.all();
       res.json(list);
     } catch (error) {
-      res.status(500).json({
-        error: 500,
-        message: 'Ocurrio un prolema en el API',
-      });
+      next(error);
     }
   }
 
-  async one(req, res) {
+  async one(req, res, next) {
     try {
       const { pokemonid } = req.params;
       const item = await pokemonRepository.one(pokemonid);
       if (item) res.json(item);
-      else {
-        res.status(404).json({
-          error: 404,
-          message: 'Este pokemon no existe en la Base de Datos',
-        });
-      }
+      else next(boom.notFound());
     } catch (error) {
-      res.status(500).json({
-        error: 500,
-        message: 'Ocurrio un prolema en el API',
-      });
+      next(error);
     }
   }
 
-  async store(req, res) {
+  async store(req, res, next) {
     try {
       const { body } = req;
       const item = await pokemonRepository.store(body);
       res.json(item);
     } catch (error) {
-      res.status(500).json({
-        error: 500,
-        message: 'Ocurrio un prolema en el API',
-      });
+      next(error);
     }
   }
 
-  async update(req, res) {
+  async update(req, res, next) {
     try {
       const { pokemonid } = req.params;
       const { body } = req;
       const item = await pokemonRepository.update(pokemonid, body);
       if (item) res.send(item);
-      else {
-        res.status(404).json({
-          error: 404,
-          message: 'Este pokemon no existe en la Base de Datos',
-        });
-      }
+      else next(boom.notFound());
     } catch (error) {
-      res.status(500).json({
-        error: 500,
-        message: 'Ocurrio un prolema en el API',
-      });
+      next(error);
     }
   }
 
-  destroy(req, res) {
+  destroy(req, res, next) {
     try {
       const { pokemonid } = req.params;
       const item = pokemonRepository.destroy(pokemonid);
       if (item) res.json(item);
-      else {
-        res.status(404).json({
-          error: 404,
-          message: 'Este pokemon no existe en la Base de Datos',
-        });
-      }
+      else next(boom.notFound());
     } catch (error) {
-      res.status(500).json({
-        error: 500,
-        message: 'Ocurrio un prolema en el API',
-      });
+      next(error);
     }
   }
 }
